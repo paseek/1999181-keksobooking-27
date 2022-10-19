@@ -1,4 +1,4 @@
-const TITLE = [
+const titles = [
   'Wija House - Unawatuna',
   'Nooit Gedacht Heritage Hotel (Original Dutch Governors House)',
   'Beach Grove Villas',
@@ -14,18 +14,18 @@ const TITLE = [
   'Nirmala Villa',
 ];
 
-const PRICE = {
+const Price = {
   MIN_PRICE: 0,
   MAX_PRICE: 100000,
 };
 
-const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel',];
+const types = ['palace', 'flat', 'house', 'bungalow', 'hotel',];
 
-const TIMES = ['12:30', '13:00', '14:00',];
+const times = ['12:30', '13:00', '14:00',];
 
-const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner',];
+const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner',];
 
-const DESCRIPTIONS = [
+const descriptions = [
   'Вилла Nirmala находится в Хабарадуве, 8 км от японской Пагода мира. К услугам гостей бесплатный Wi-Fi на всей территории и бесплатная частная парковка.',
   'Комфортабельная вилла Anara находится в тихом месте недалеко от пляжа. В зонах общественного пользования действует бесплатный WiFi.',
   'Лаконично обставленная вилла располагает частным входом, вентилятором, свежим постельным бельем, шкафом и противомоскитной сеткой. К вашим услугам смежная ванная комната с душем, биде, феном и бесплатными туалетно-косметическими принадлежностями.',
@@ -42,13 +42,13 @@ const DESCRIPTIONS = [
   'Отель Agnus Unawatuna - Unawatuna с панорамным видом на Индийский океан и пейзажным бассейном расположен в городе Унаватуна, менее чем в 1 км от Японской пагоды мира.',
 ];
 
-const PHOTOS = [
+const photos = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const LOCATION = {
+const Locations = {
   MIN_LAT: 35.65,
   MAX_LAT: 35.7,
   MIN_LONG: 139.7,
@@ -62,7 +62,7 @@ const MAX_GUEST = 9;
 // const AVATAR_PHOTOS_ID = Array.from({ length: 10 }, (v, i) =>  i + 1);
 // Array.from({length: 10}, (_, i) => i + 1)
 
-const AUTHOR_MAX_PHOTOS = 10;
+// const AUTHOR_MAX_PHOTOS = 10;
 
 const ARRAY_LENGTH = 10;
 
@@ -88,42 +88,39 @@ function getRandomPositiveFloat (a, b, digits = 1) {
   return +result.toFixed(digits);
 }
 
-// ?Не понимаю почему тут у функции опущены скобки {}
 const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
-// ?Не понимаю почему тут у функции опущены скобки {}
-const getRandomLat = () => getRandomPositiveFloat (LOCATION.MIN_LAT, LOCATION.MAX_LAT, 5);
-const getRandomLong = () => getRandomPositiveFloat(LOCATION.MIN_LONG, LOCATION.MAX_LONG, 5);
+const getRandomLat = () => getRandomPositiveFloat (Locations.MIN_LAT, Locations.MAX_LAT, 5);
+const getRandomLong = () => getRandomPositiveFloat(Locations.MIN_LONG, Locations.MAX_LONG, 5);
 
-// ?Не понимаю почему тут тело функции обернуто в скобки ()
-// ?Не понимаю как реализовать вывод номера фото по очереди от 01 до 10
-const createAuthor = () => ({
-  avatar: `img/avatars/user${getRandomPositiveInteger(1, AUTHOR_MAX_PHOTOS).toString().padStart(2, '0')}.png`
+const createAuthor = (elem) => ({
+  avatar: `img/avatars/user${elem.toString().padStart(2, '0')}.png`
 });
 
 const createOfferResult = () => ({
-  title: getRandomArrayElement(TITLE),
-  address: `${getRandomLat()}, ${getRandomLong()}`, // Не понимаю почему на выходе получаем строку а не число
-  price: getRandomPositiveInteger(PRICE.MIN_PRICE, PRICE.MAX_PRICE),
-  type: getRandomArrayElement(TYPE),
+  title: getRandomArrayElement(titles),
+  address: `${getRandomLat()}, ${getRandomLong()}`,
+  price: getRandomPositiveInteger(Price.MIN_PRICE, Price.MAX_PRICE),
+  type: getRandomArrayElement(types),
   numbers: getRandomPositiveInteger(1, MAX_ROOMS),
   guests: getRandomPositiveInteger(1, MAX_GUEST),
-  checkin: getRandomArrayElement(TIMES),
-  checkout: getRandomArrayElement(TIMES),
-  features: getRandomArrayElement(FEATURES),
-  description: getRandomArrayElement(DESCRIPTIONS),
-  photos: getRandomArrayElement(PHOTOS),
+  checkin: getRandomArrayElement(times),
+  checkout: getRandomArrayElement(times),
+  features: getRandomArrayElement(features),
+  description: getRandomArrayElement(descriptions),
+  photos: getRandomArrayElement(photos),
 });
 
-const createLocation = () => ({
-  lat: getRandomPositiveFloat (LOCATION.MIN_LAT, LOCATION.MAX_LAT, 5),
-  lng: getRandomPositiveFloat(LOCATION.MIN_LONG, LOCATION.MAX_LONG, 5),
-});
+// const createLocation = (lat, lng) => ({
+//   lat: getRandomLat(lat),
+//   lng: getRandomLong(lng),
+// });
 
-const createOffers = () => ({
-  author: createAuthor(),
+const createOffers = (elem) => ({
+  author: createAuthor(elem),
   offer: createOfferResult(),
-  location: createLocation(),
+  // location: createLocation(lat, lng),
+  location: `${getRandomLat()}, ${getRandomLong()}`,
 });
 
 const getOffers = () =>
