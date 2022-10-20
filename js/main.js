@@ -59,15 +59,9 @@ const MAX_ROOMS = 5;
 
 const MAX_GUEST = 9;
 
-// const AVATAR_PHOTOS_ID = Array.from({ length: 10 }, (v, i) =>  i + 1);
-// Array.from({length: 10}, (_, i) => i + 1)
-
-// const AUTHOR_MAX_PHOTOS = 10;
-
 const ARRAY_LENGTH = 10;
 
-// ищем случайное целое число
-function getRandomPositiveInteger (a, b) {
+const getRandomPositiveInteger = (a, b) => {
   if (a < 0 || b < 0) {
     return NaN;
   }
@@ -75,10 +69,9 @@ function getRandomPositiveInteger (a, b) {
   const upper = Math.floor(Math.max(a, b));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
-}
+};
 
-// ищем случайное число с висячей точкой
-function getRandomPositiveFloat (a, b, digits = 1) {
+const getRandomPositiveFloat = (a, b, digits = 1) => {
   if (a < 0 || b < 0 || digits < 0) {
     return NaN;
   }
@@ -86,20 +79,20 @@ function getRandomPositiveFloat (a, b, digits = 1) {
   const upper = Math.max(a, b);
   const result = Math.random() * (upper - lower) + lower;
   return +result.toFixed(digits);
-}
+};
 
 const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
-const getRandomLat = () => getRandomPositiveFloat (Locations.MIN_LAT, Locations.MAX_LAT, 5);
+const getRandomLat = () => getRandomPositiveFloat(Locations.MIN_LAT, Locations.MAX_LAT, 5);
 const getRandomLong = () => getRandomPositiveFloat(Locations.MIN_LONG, Locations.MAX_LONG, 5);
 
 const createAuthor = (elem) => ({
   avatar: `img/avatars/user${elem.toString().padStart(2, '0')}.png`
 });
 
-const createOfferResult = () => ({
+const createOfferResult = (lat, lng) => ({
   title: getRandomArrayElement(titles),
-  address: `${getRandomLat()}, ${getRandomLong()}`,
+  address: `${lat}, ${lng}`,
   price: getRandomPositiveInteger(Price.MIN_PRICE, Price.MAX_PRICE),
   type: getRandomArrayElement(types),
   numbers: getRandomPositiveInteger(1, MAX_ROOMS),
@@ -111,17 +104,22 @@ const createOfferResult = () => ({
   photos: getRandomArrayElement(photos),
 });
 
-// const createLocation = (lat, lng) => ({
-//   lat: getRandomLat(lat),
-//   lng: getRandomLong(lng),
-// });
-
-const createOffers = (elem) => ({
-  author: createAuthor(elem),
-  offer: createOfferResult(),
-  // location: createLocation(lat, lng),
-  location: `${getRandomLat()}, ${getRandomLong()}`,
+const createLocation = (lat, lng) => ({
+  lat,
+  lng,
 });
+
+const createOffers = (elem) => {
+  const lat = getRandomLat();
+  const lng = getRandomLong();
+
+  return {
+
+    author: createAuthor(elem),
+    offer: createOfferResult(lat, lng),
+    location: createLocation(lat, lng),
+  };
+};
 
 const getOffers = () =>
   Array.from({ length: ARRAY_LENGTH }, (_, offersIndex) => createOffers(offersIndex + 1));
