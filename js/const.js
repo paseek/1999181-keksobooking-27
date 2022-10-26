@@ -23,6 +23,14 @@ const types = ['palace', 'flat', 'house', 'bungalow', 'hotel',];
 
 const times = ['12:30', '13:00', '14:00',];
 
+const typesRus = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
+
 const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner',];
 
 const descriptions = [
@@ -65,6 +73,7 @@ export {
   titles,
   Price,
   types,
+  typesRus,
   times,
   features,
   descriptions,

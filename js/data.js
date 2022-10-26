@@ -2,7 +2,8 @@ import { getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement
 import {
   titles,
   Price,
-  types,
+  // types,
+  typesRus,
   times,
   features,
   descriptions,
@@ -23,7 +24,7 @@ const createOfferResult = (lat, lng) => ({
   title: getRandomArrayElement(titles),
   address: `${lat}, ${lng}`,
   price: getRandomPositiveInteger(Price.MIN_PRICE, Price.MAX_PRICE),
-  type: getRandomArrayElement(types),
+  type: getRandomArrayElement(Object.values(typesRus)),
   numbers: getRandomPositiveInteger(1, MAX_ROOMS),
   guests: getRandomPositiveInteger(1, MAX_GUEST),
   checkin: getRandomArrayElement(times),
