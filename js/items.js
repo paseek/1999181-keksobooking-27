@@ -24,6 +24,12 @@ similarOffer.forEach((item) => {
   offerElement.querySelector('.popup__text--address').textContent = item.offer.address;
   offerElement.querySelector('.popup__text--price').textContent = `${item.offer.price} ₽/ночь`; //Обернуть в тег <span>
   offerElement.querySelector('.popup__type').textContent = item.offer.type;
+  offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`;
+  offerElement.querySelector('.popup__description').textContent = item.offer.description;
+  offerElement.querySelector('.popup__avatar').src = item.author.avatar;
+  // offerElement.querySelector('.popup__text--capacity').textContent = `${item.offer.numbers} комнаты для ${item.offer.guests} гостей`;
+  // offerElement.querySelector('.popup__features').textContent = item.offer.features;
+  // offerElement.querySelector('.popup__photo').src = item.offer.photos;
 
   // Создаем правильную словоформу слов "гостей" и "комнат"
   const getWordForms = () => {
@@ -38,9 +44,6 @@ similarOffer.forEach((item) => {
     }
   };
   offerElement.querySelector('.popup__text--capacity').textContent = getWordForms();
-  // offerElement.querySelector('.popup__text--capacity').textContent = `${item.offer.numbers} комнаты для ${item.offer.guests} гостей`;
-
-  offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${item.offer.checkin}, выезд до ${item.offer.checkout}`;
 
   // Сверяем типы помещений в массиве с теми что есть в разметке
   // const getFeatures = () => {
@@ -59,11 +62,6 @@ similarOffer.forEach((item) => {
   // };
   // offerElement.querySelector('.popup__features').textContent = getFeatures();
 
-
-  offerElement.querySelector('.popup__features').textContent = item.offer.features;
-  offerElement.querySelector('.popup__description').textContent = item.offer.description;
-  offerElement.querySelector('.popup__avatar').src = item.author.avatar;
-
   // Добавляем все фотографии объекта из массива.
   // const card = similarOfferTemplate.cloneNode(true);
   // const photoContainer = card.querySelector('.popup__photos');
@@ -79,18 +77,11 @@ similarOffer.forEach((item) => {
   //     similarPhotoFragment.append(image);
   //     photoContainer.append(similarPhotoFragment);
   //   });
-  // }
-
-
-  offerElement.querySelector('.popup__photo').src = item.offer.photos; // не понимаю как добавить все фотографии
-
-  offerListFragment.append(offerElement);
-  offerElementsList.push(offerElement);
-
-  // similarListFragment.appendChild(card);
+  // };
 });
 
-
-// Добавляем один элемент получиышегося объявления в разметку
-similarOfferElement.append(offerElementsList[1]);
+// Как вывести все фотографии массива;
+// Как сопоставить и вывести все "features";
+// Как прятать блоки в случае отсутсвия данных;
+// Не понимаю как добавить один элемент получившегося объявления в разметку;
 
