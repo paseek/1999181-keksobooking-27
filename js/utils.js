@@ -20,6 +20,4 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
 
 const getRandomArrayElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
-const hideElement = (element) => element.classList.add('hidden');
-
-export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, hideElement};
+export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement};

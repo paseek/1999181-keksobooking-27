@@ -29,9 +29,9 @@ const createOfferResult = (lat, lng) => ({
   guests: getRandomPositiveInteger(1, MAX_GUEST),
   checkin: getRandomArrayElement(times),
   checkout: getRandomArrayElement(times),
-  features: getRandomArrayElement(features),
+  features: features.slice(0, getRandomPositiveInteger(0, features.length - 1)),
   description: getRandomArrayElement(descriptions),
-  photos: getRandomArrayElement(photos),
+  photos: photos.slice(0, getRandomPositiveInteger(0, photos.length - 1)),
 });
 
 const createLocation = (lat, lng) => ({
@@ -53,5 +53,6 @@ const createOffers = (elem) => {
 
 const getOffers = () =>
   Array.from({ length: ARRAY_LENGTH }, (_, offersIndex) => createOffers(offersIndex + 1));
+
 
 export {getOffers};
