@@ -1,4 +1,4 @@
 import {getOffers} from './data.js';
-import './items.js';
+import './popup.js';
 
 getOffers();
