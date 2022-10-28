@@ -9,11 +9,13 @@ const similarOffers = getOffers();
 
 const similarListFragment = document.createDocumentFragment();
 
-similarOffers.forEach(({ author, offer }) => { // подскажи подробнее про приведение данных {} и где почитать
+similarOffers.forEach(({ author, offer }) => {
   const offerElement = offerTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.title;
   offerElement.querySelector('.popup__text--address').textContent = offer.address;
-  offerElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`; //Обернуть в тег <span>
+  // offerElement.querySelector('[data-price]').textContent = offer.price;
+  offerElement.querySelector('.popup__text--price').firstChild.textContent = offer.price;
+
   offerElement.querySelector('.popup__type').textContent = offer.type;
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   offerElement.querySelector('.popup__avatar').src = author.avatar;
@@ -31,10 +33,9 @@ similarOffers.forEach(({ author, offer }) => { // подскажи подроб�
   const featureList = featureContainer.querySelectorAll('.popup__feature');
   const featuresArray = offer.features;
 
-  // прошу тебя объясить по шагам как работает этот блок кода
-  const modifiers = featuresArray.map((feature) => 'popup__feature--' + feature); // покажи как исправить ошибку линтера
+  const modifiers = featuresArray.map((feature) => `popup__feature-- + ${feature}`); // покажи как исправить ошибку линтера
   featureList.forEach((offerListItem) => {
-    const modifier = offerListItem.classList[1]; // подскажи что означает [1]
+    const modifier = offerListItem.classList[1];
 
     if (!modifiers.includes(modifier)) {
       offerListItem.remove();
@@ -62,3 +63,5 @@ similarOffers.forEach(({ author, offer }) => { // подскажи подроб�
 
 const randomElement = offertElementsList[Math.floor(Math.random() * offertElementsList.length)];
 mapCanvas.appendChild(randomElement);
+
+export { randomElement };
