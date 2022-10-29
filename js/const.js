@@ -19,7 +19,7 @@ const Price = {
   MAX_PRICE: 100000,
 };
 
-const types = ['palace', 'flat', 'house', 'bungalow', 'hotel',];
+// const types = ['palace', 'flat', 'house', 'bungalow', 'hotel',];
 
 const times = ['12:30', '13:00', '14:00',];
 
@@ -72,7 +72,7 @@ const ARRAY_LENGTH = 10;
 export {
   titles,
   Price,
-  types,
+  // types,
   typesRus,
   times,
   features,

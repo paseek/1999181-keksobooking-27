@@ -16,9 +16,7 @@ similarOffers.forEach(({ author, offer }) => {
   const offerElement = offerTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = title;
   offerElement.querySelector('.popup__text--address').textContent = address;
-  offerElement.querySelector('.popup__text--price').firstChild.textContent = price;
   offerElement.querySelector('.popup__type').textContent = type;
-  offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
   offerElement.querySelector('.popup__avatar').src = avatar;
 
   const descriptionContainer = offerElement.querySelector('.popup__description');
@@ -39,16 +37,36 @@ similarOffers.forEach(({ author, offer }) => {
   checkDataAvailable(addressContainer, address);
   checkDataAvailable(typeContainer, type);
 
+  const priceContainer = offerElement.querySelector('.popup__text--price');
+  if (price) {
+    priceContainer.firstChild.textContent = price;
+  }
+  else {
+    priceContainer.remove();
+  }
+
+  const timeContainer = offerElement.querySelector('.popup__text--time');
+  if (checkin && checkout) {
+    timeContainer.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  }
+  else {
+    timeContainer.remove();
+  }
+
   const featureContainer = offerElement.querySelector('.popup__features');
   const featureList = featureContainer.querySelectorAll('.popup__feature');
-  const modifiers = features.map((feature) => `popup__feature--${feature}`);
-  featureList.forEach((offerListItem) => {
-    const modifier = offerListItem.classList[1];
-
-    if (!modifiers.includes(modifier)) {
-      offerListItem.remove();
-    }
-  });
+  if (features) {
+    const modifiers = features.map((feature) => `popup__feature--${feature}`);
+    featureList.forEach((offerListItem) => {
+      const modifier = offerListItem.classList[1];
+      if (!modifiers.includes(modifier)) {
+        offerListItem.remove();
+      }
+    });
+  }
+  else {
+    featureContainer.remove();
+  }
 
   const photoContainer = offerElement.querySelector('.popup__photos');
   const photoElement = photoContainer.querySelector('.popup__photo');
@@ -75,7 +93,13 @@ similarOffers.forEach(({ author, offer }) => {
         return `${rooms} комнат для ${guestsNumber}`;
     }
   };
-  offerElement.querySelector('.popup__text--capacity').textContent = getCapacity();
+  const capacityContainer = offerElement.querySelector('.popup__text--capacity');
+  if (guests && rooms) {
+    capacityContainer.textContent = getCapacity();
+  }
+  else {
+    capacityContainer.remove();
+  }
 
   similarListFragment.append(offerElement);
 });
