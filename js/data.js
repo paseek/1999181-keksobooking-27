@@ -25,7 +25,7 @@ const createOfferResult = (lat, lng) => ({
   address: `${lat}, ${lng}`,
   price: getRandomPositiveInteger(Price.MIN_PRICE, Price.MAX_PRICE),
   type: getRandomArrayElement(Object.values(typesRus)),
-  numbers: getRandomPositiveInteger(1, MAX_ROOMS),
+  rooms: getRandomPositiveInteger(1, MAX_ROOMS),
   guests: getRandomPositiveInteger(1, MAX_GUEST),
   checkin: getRandomArrayElement(times),
   checkout: getRandomArrayElement(times),

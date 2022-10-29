@@ -1,7 +1,11 @@
 import { getOffers } from './data.js';
-import { makeFormInactive, makeMapInactive } from './form.js';
-import { randomElement } from './popup.js';
+import { makeFormInactive, makeFormActive, makeMapInactive, makeMapActive } from './form.js';
+import { renderSimilarOffers } from './popup.js';
 
-getOffers();
 makeFormInactive();
 makeMapInactive();
+
+renderSimilarOffers(getOffers());
+
+makeFormActive();
+makeMapActive();

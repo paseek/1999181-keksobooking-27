@@ -31,7 +31,7 @@ const makeMapInactive = () => {
 };
 
 const makeMapActive = () => {
-  mapFilters.classList.remove('ad-form--disabled');
+  mapFilters.classList.remove('map__filters--disabled');
 
   mapElements.forEach((element) => {
     element.disabled = false;
