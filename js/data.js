@@ -2,7 +2,8 @@ import { getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement
 import {
   titles,
   Price,
-  types,
+  // types,
+  typesRus,
   times,
   features,
   descriptions,
@@ -23,14 +24,14 @@ const createOfferResult = (lat, lng) => ({
   title: getRandomArrayElement(titles),
   address: `${lat}, ${lng}`,
   price: getRandomPositiveInteger(Price.MIN_PRICE, Price.MAX_PRICE),
-  type: getRandomArrayElement(types),
-  numbers: getRandomPositiveInteger(1, MAX_ROOMS),
+  type: getRandomArrayElement(Object.values(typesRus)),
+  rooms: getRandomPositiveInteger(1, MAX_ROOMS),
   guests: getRandomPositiveInteger(1, MAX_GUEST),
   checkin: getRandomArrayElement(times),
   checkout: getRandomArrayElement(times),
-  features: getRandomArrayElement(features),
+  features: features.slice(0, getRandomPositiveInteger(0, features.length - 1)),
   description: getRandomArrayElement(descriptions),
-  photos: getRandomArrayElement(photos),
+  photos: photos.slice(0, getRandomPositiveInteger(0, photos.length - 1)),
 });
 
 const createLocation = (lat, lng) => ({
@@ -52,5 +53,6 @@ const createOffers = (elem) => {
 
 const getOffers = () =>
   Array.from({ length: ARRAY_LENGTH }, (_, offersIndex) => createOffers(offersIndex + 1));
+
 
 export {getOffers};
