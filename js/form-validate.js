@@ -1,40 +1,33 @@
-const adForm = document.querySelector('.ad-form');
-const price = adForm.querySelector('#price');
-const type = adForm.querySelector('#type');
+// ------ Перенес все в form.js так как не понял как подключить этот файл ------ //
 
-const priceSettings = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000,
-};
+// const adForm = document.querySelector('.ad-form');
+// const title = adForm.querySelector('#tiile');
 
-const pristine = new Pristine(adForm, {
-  classTo: 'ad-form__element',
-  errorTextParent: 'ad-form__element',
-  errorTextClass: 'ad-form__element--invalid',
-}, true);
 
-const getTypeChange = () => {
-  price.placeholder = priceSettings[type.value];
-  price.min = priceSettings[type.value];
-  price.dataset.pristineMinMessage = `минимальное значение ${priceSettings[type.value]}`;
-  pristine.validate(price);
-};
+// const pristine = new Pristine(adForm, {
+//   classTo: 'ad-form__element',
+//   errorTextParent: 'ad-form__element',
+//   errorTextClass: 'ad-form__element--invalid',
+// }, true);
 
-type.addEventListener('change', getTypeChange);
-price.addEventListener('change', getTypeChange);
+// const validateTitle = (value) => value.length >= 30 && value.length <= 100;
 
-const validateTitle = (value) => value.length >= 30 && value.length <= 100;
+// pristine.addValidator(
+//   title,
+//   validateTitle,
+//   'От 30 до 100 символов',
+// );
 
-pristine.addValidator(
-  adForm.querySelector('#title'),
-  validateTitle,
-  'От 30 до 100 символов',
-);
+// const onformSubmit = (evt) => {
+//   evt.preventDefault();
 
-adForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
+//   const isValid = pristine.validate();
+
+//   if (isValid) {
+//     adForm.submit();
+//   }
+// };
+
+// adForm.addEventListener('submit', onformSubmit);
+
+// export { pristine };
