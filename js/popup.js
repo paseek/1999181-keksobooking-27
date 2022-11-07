@@ -1,7 +1,11 @@
+import {getOffers} from './data.js';
+
 const mapCanvas = document.querySelector('#map-canvas');
 const offerTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
+
+const offersList = getOffers();
 
 const similarListFragment = document.createDocumentFragment();
 
@@ -107,4 +111,4 @@ const renderSimilarOffers = (similarOffers) => {
   mapCanvas.append(similarListFragment);
 };
 
-export { renderSimilarOffers };
+export { offersList, renderSimilarOffers };
