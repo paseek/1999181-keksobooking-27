@@ -9,3 +9,4 @@ renderSimilarOffers(getOffers());
 
 makeFormActive();
 makeMapActive();
+

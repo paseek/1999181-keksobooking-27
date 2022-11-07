@@ -69,6 +69,24 @@ const MAX_GUEST = 9;
 
 const ARRAY_LENGTH = 10;
 
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+
+const priceOption = {
+  'bungalow': '0',
+  'flat' : '1000',
+  'hotel' : '3000',
+  'house' : '5000',
+  'palace' : '10000',
+};
+
+const roomsOption = {
+  1 : ['1'],
+  2 : ['2', '1'],
+  3 : ['3', '2', '1'],
+  100 : ['0'],
+};
+
 export {
   titles,
   Price,
@@ -82,4 +100,8 @@ export {
   MAX_ROOMS,
   MAX_GUEST,
   ARRAY_LENGTH,
+  MIN_TITLE_LENGTH,
+  MAX_TITLE_LENGTH,
+  priceOption,
+  roomsOption,
 };

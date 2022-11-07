@@ -54,5 +54,4 @@ const createOffers = (elem) => {
 const getOffers = () =>
   Array.from({ length: ARRAY_LENGTH }, (_, offersIndex) => createOffers(offersIndex + 1));
 
-
 export {getOffers};
