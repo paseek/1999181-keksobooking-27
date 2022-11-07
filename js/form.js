@@ -3,6 +3,7 @@ import {
   MAX_TITLE_LENGTH,
   priceOption,
   roomsOption,
+  MAX_PRICE,
 } from './const.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -13,6 +14,8 @@ const type = adForm.querySelector('#type');
 const price = adForm.querySelector('#price');
 const capacity = adForm.querySelector('#capacity');
 const rooms = adForm.querySelector('#room_number');
+const address = adForm.querySelector('#address');
+const slider = adForm.querySelector('.ad-form__slider');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelectorAll('.map__filter');
 const mapFeatures = mapFilters.querySelector('.map__features');
@@ -50,10 +53,37 @@ pristine.addValidator(
   getPriceErrorMessage,
 );
 
+noUiSlider.create(slider, {
+  range: {
+    min: getNumberMinPrice(),
+    max: MAX_PRICE,
+  },
+  start: getNumberMinPrice(),
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return Number(value.toFixed(0));
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+slider.noUiSlider.on('update', () => {
+  price.value = slider.noUiSlider.get();
+});
+
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
+  slider.noUiSlider.updateOptions({
+    start: price.placeholder,
+  });
   pristine.valadate(price);
 };
+
+const onPriceInputchange = () => slider.noUiSlider.set(price.value);
+
 
 const validateCapacity = () => roomsOption[rooms.value].includes(capacity.value);
 
@@ -67,6 +97,17 @@ pristine.addValidator(
 
 const onCapacityChange = () => pristine.validate(capacity);
 const onRoomsChange = () => pristine.validate(capacity);
+
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+
+const onTimeInChange = () => {timeOut.value = timeIn.value;};
+const onTimeOutChange = () => {timeIn.value = timeOut.value;};
+
+address.setAttribute('readonly', 'readonly');
+const getCoordinates = (coordinates) => {
+  address.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
+};
 
 const onformSubmit = (evt) => {
   evt.preventDefault();
@@ -85,10 +126,13 @@ const makeFormInactive = () => {
     fieldset.disabled = true;
   });
   type.removeEventListener('change', onTypeChange);
-  price.removeEventListener('change', onTypeChange);
+  // price.removeEventListener('change', onTypeChange);
+  price.removeEventListener('change', onPriceInputchange);
   capacity.removeEventListener('change', onCapacityChange);
   rooms.removeEventListener('change', onRoomsChange);
   adForm.removeEventListener('submit', onformSubmit);
+  timeIn.removeEventListener('change', onTimeInChange);
+  timeOut.removeEventListener('change', onTimeOutChange);
 
 };
 
@@ -99,10 +143,13 @@ const makeFormActive = () => {
     element.disabled = false;
   });
   type.addEventListener('change', onTypeChange);
-  price.removeEventListener('change', onTypeChange);
+  // price.addEventListener('change', onTypeChange);
+  price.addEventListener('change', onPriceInputchange);
   capacity.addEventListener('change', onCapacityChange);
   rooms.addEventListener('change', onRoomsChange);
   adForm.addEventListener('submit', onformSubmit);
+  timeIn.addEventListener('change', onTimeInChange);
+  timeOut.addEventListener('change', onTimeOutChange);
 };
 
 const makeMapInactive = () => {
@@ -122,4 +169,4 @@ const makeMapActive = () => {
 };
 
 
-export { makeFormInactive, makeFormActive, makeMapInactive, makeMapActive };
+export { makeFormInactive, makeFormActive, makeMapInactive, makeMapActive, getCoordinates };

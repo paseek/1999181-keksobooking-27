@@ -80,6 +80,8 @@ const priceOption = {
   'palace' : '10000',
 };
 
+const MAX_PRICE = 100000;
+
 const roomsOption = {
   1 : ['1'],
   2 : ['2', '1'],
@@ -104,4 +106,5 @@ export {
   MAX_TITLE_LENGTH,
   priceOption,
   roomsOption,
+  MAX_PRICE,
 };
