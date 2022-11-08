@@ -1,5 +1,5 @@
 import { makeFormActive, makeMapActive, setCoordinates } from './form.js';
-import { DEFAULTLAT, DEFAULTLNG } from './const.js';
+import { DEFAULTLAT, DEFAULTLNG, DEFAULT_ZOOM } from './const.js';
 import { renderSimilarOffer } from './popup.js';
 
 
@@ -71,7 +71,7 @@ const initMap = () => {
     .setView({
       lat: DEFAULTLAT,
       lng: DEFAULTLNG,
-    }, 11);
+    }, DEFAULT_ZOOM);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
