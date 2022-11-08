@@ -4,6 +4,8 @@ import {
   priceOption,
   roomsOption,
   MAX_PRICE,
+  DEFAULTLAT,
+  DEFAULTLNG,
 } from './const.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -105,7 +107,8 @@ const onTimeInChange = () => {timeOut.value = timeIn.value;};
 const onTimeOutChange = () => {timeIn.value = timeOut.value;};
 
 address.setAttribute('readonly', 'readonly');
-const getCoordinates = (coordinates) => {
+address.value = `${DEFAULTLAT}, ${DEFAULTLNG}`;
+const setCoordinates = (coordinates) => {
   address.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
 };
 
@@ -169,4 +172,4 @@ const makeMapActive = () => {
 };
 
 
-export { makeFormInactive, makeFormActive, makeMapInactive, makeMapActive, getCoordinates };
+export { makeFormInactive, makeFormActive, makeMapInactive, makeMapActive, setCoordinates };

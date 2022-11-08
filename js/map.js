@@ -1,28 +1,10 @@
-import { makeFormActive, makeMapActive } from './form.js';
-// import { renderSimilarOffers } from './popup.js';
+import { makeFormActive, makeMapActive, setCoordinates } from './form.js';
+import { DEFAULTLAT, DEFAULTLNG } from './const.js';
+import { renderSimilarOffer } from './popup.js';
 
-const DEFAULTLAT = 35.6895.toFixed(5);
-const DEFAULTLNG = 139.692.toFixed(5);
-const address = document.querySelector('#address');
 
-address.value = `${DEFAULTLAT}, ${DEFAULTLNG}`;
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-    makeMapActive();
-    makeFormActive();
-  })
-  .setView({
-    lat: DEFAULTLAT,
-    lng: DEFAULTLNG,
-  }, 11);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map);
 
 const markerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -45,7 +27,7 @@ mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
   const latLng = evt.target.getLatLng();
-  address.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`; // не понимаю это строку
+  setCoordinates(latLng);
 });
 
 const resetMainMarker = () => {
@@ -63,7 +45,7 @@ const markerOfferIcon = L.icon({
 
 const renderMarkers = (list) => {
 
-  list.forEach(({location, offer}) => {
+  list.forEach(({author, location, offer}) => {
     const marker = L.marker(
       {
         lat: location.lat,
@@ -75,11 +57,29 @@ const renderMarkers = (list) => {
     );
 
     marker
-      .addTo(map)
-      .bindPopup(offer.title);
+      .addTo(markerGroup)
+      .bindPopup(renderSimilarOffer(author, offer));
   });
 
 };
 
-export {renderMarkers, resetMainMarker};
+const initMap = () => {
+  map.on('load', () => {
+    makeMapActive();
+    makeFormActive();
+  })
+    .setView({
+      lat: DEFAULTLAT,
+      lng: DEFAULTLNG,
+    }, 11);
+
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(markerGroup);
+};
+
+export {renderMarkers, resetMainMarker, initMap};
 
