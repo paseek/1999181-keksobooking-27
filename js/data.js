@@ -42,7 +42,6 @@ const createLocation = (lat, lng) => ({
 const createOffers = (elem) => {
   const lat = getRandomLat();
   const lng = getRandomLong();
-
   return {
 
     author: createAuthor(elem),

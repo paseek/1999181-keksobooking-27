@@ -1,13 +1,14 @@
 import { getOffers } from './data.js';
-import { makeFormInactive, makeFormActive, makeMapInactive, makeMapActive } from './form.js';
-import { renderSimilarOffers } from './popup.js';
+import { makeFormInactive, makeMapInactive } from './form.js';
+// import { renderSimilarOffers } from './popup.js';
+import { initMap, renderMarkers } from './map.js';
 
 
 makeFormInactive();
 makeMapInactive();
 
+initMap();
+renderMarkers(getOffers());
 
-renderSimilarOffers(getOffers());
-
-makeFormActive();
-makeMapActive();
+// makeFormActive();
+// makeMapActive();
