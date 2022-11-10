@@ -1,5 +1,5 @@
 import { makeFormActive, makeMapActive, setCoordinates } from './form.js';
-import { DEFAULTLAT, DEFAULTLNG, DEFAULT_ZOOM } from './const.js';
+import { DEFAULTLAT, DEFAULTLNG, DEFAULT_ZOOM, ARRAY_LENGTH } from './const.js';
 import { renderSimilarOffer } from './popup.js';
 
 
@@ -45,7 +45,7 @@ const markerOfferIcon = L.icon({
 
 const renderMarkers = (list) => {
 
-  list.forEach(({author, location, offer}) => {
+  list.slice(0, ARRAY_LENGTH).forEach(({author, location, offer}) => {
     const marker = L.marker(
       {
         lat: location.lat,

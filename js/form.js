@@ -1,3 +1,5 @@
+import { sendData } from './api.js';
+
 import {
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
@@ -18,6 +20,7 @@ const capacity = adForm.querySelector('#capacity');
 const rooms = adForm.querySelector('#room_number');
 const address = adForm.querySelector('#address');
 const slider = adForm.querySelector('.ad-form__slider');
+const submitButton = adForm.querySelector('.ad-form__submit');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelectorAll('.map__filter');
 const mapFeatures = mapFilters.querySelector('.map__features');
@@ -112,13 +115,32 @@ const setCoordinates = (coordinates) => {
   address.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
 };
 
-const onformSubmit = (evt) => {
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Сохранить';
+};
+
+const onformSubmit = (evt, onSuccess, onFail) => {
   evt.preventDefault();
-
   const isValid = pristine.validate();
-
   if (isValid) {
-    adForm.submit();
+    blockSubmitButton();
+    sendData(
+      () => {
+        onSuccess();
+        unblockSubmitButton();
+      },
+      () => {
+        onFail('Не удалось отправить форму. Попробуйте ещё раз');
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
   }
 };
 

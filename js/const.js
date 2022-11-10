@@ -99,6 +99,8 @@ const DEFAULTLNG = 139.692.toFixed(5);
 
 const DEFAULT_ZOOM = 10;
 
+const SHOW_ALERT_TIME = 5000;
+
 export {
   titles,
   Price,
@@ -120,4 +122,5 @@ export {
   DEFAULTLAT,
   DEFAULTLNG,
   DEFAULT_ZOOM,
+  SHOW_ALERT_TIME,
 };
