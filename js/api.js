@@ -1,4 +1,4 @@
-import { showAlert } from './utils.js';
+import { showAlert } from './modal.js';
 
 const getData = (onSuccess) => {
   fetch('https://27.javascript.pages.academy/keksobooking/data')
@@ -11,7 +11,7 @@ const getData = (onSuccess) => {
     });
 };
 
-const sendData = (onSuccess, body) => {
+const sendData = (onSuccess, onFail, body) => {
 
   fetch(
     'https://27.javascript.pages.academy/keksobooking',
@@ -24,11 +24,11 @@ const sendData = (onSuccess, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+        onFail();
       }
     })
     .catch(() => {
-      showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+      onFail();
     });
 };
 

@@ -30,12 +30,12 @@ mainMarker.on('moveend', (evt) => {
   setCoordinates(latLng);
 });
 
-const resetMainMarker = () => {
-  mainMarker.setLatLng({
-    lat: DEFAULTLAT,
-    lng: DEFAULTLNG,
-  });
-};
+// const resetMainMarker = () => {
+//   mainMarker.setLatLng({
+//     lat: DEFAULTLAT,
+//     lng: DEFAULTLNG,
+//   });
+// };
 
 const markerOfferIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -81,5 +81,17 @@ const initMap = () => {
   ).addTo(markerGroup);
 };
 
-export {renderMarkers, resetMainMarker, initMap};
+const resetMap = () => {
+  map.setView({
+    lat: DEFAULTLAT,
+    lng: DEFAULTLNG,
+  }, DEFAULT_ZOOM);
+  mainMarker.setLatLng({
+    lat: DEFAULTLAT,
+    lng: DEFAULTLNG,
+  });
+  map.closePopup();
+};
+
+export {renderMarkers, resetMap, initMap};
 

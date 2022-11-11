@@ -1,5 +1,9 @@
 import { sendData } from './api.js';
 
+import { resetMap } from './map.js';
+
+import { showErrorMessage, showSuccessMessage } from './modal.js';
+
 import {
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
@@ -21,6 +25,7 @@ const rooms = adForm.querySelector('#room_number');
 const address = adForm.querySelector('#address');
 const slider = adForm.querySelector('.ad-form__slider');
 const submitButton = adForm.querySelector('.ad-form__submit');
+const resetButton = adForm.querySelector('.ad-form__reset');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelectorAll('.map__filter');
 const mapFeatures = mapFilters.querySelector('.map__features');
@@ -79,12 +84,16 @@ slider.noUiSlider.on('update', () => {
   price.value = slider.noUiSlider.get();
 });
 
+const resetSlider = () => {
+  slider.noUiSlider.reset();
+};
+
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
   slider.noUiSlider.updateOptions({
     start: price.placeholder,
   });
-  pristine.valadate(price);
+  pristine.validate(price);
 };
 
 const onPriceInputchange = () => slider.noUiSlider.set(price.value);
@@ -116,33 +125,47 @@ const setCoordinates = (coordinates) => {
 };
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
+  // submitButton.disabled = true;
+  submitButton.setAttribute('disabled', true);
   submitButton.textContent = 'Сохраняю...';
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
+  // submitButton.disabled = false;
+  submitButton.removeAttribute('disabled');
   submitButton.textContent = 'Сохранить';
 };
 
-const onformSubmit = (evt, onSuccess, onFail) => {
+const resetAll = () => {
+  adForm.reset();
+  resetMap();
+  resetSlider();
+};
+
+resetButton.addEventListener('click', resetAll);
+
+const onformSubmit = (evt) => {
   evt.preventDefault();
+
   const isValid = pristine.validate();
+
   if (isValid) {
     blockSubmitButton();
     sendData(
       () => {
-        onSuccess();
+        showSuccessMessage();
+        resetAll();
         unblockSubmitButton();
       },
       () => {
-        onFail('Не удалось отправить форму. Попробуйте ещё раз');
+        showErrorMessage();
         unblockSubmitButton();
       },
       new FormData(evt.target),
     );
   }
 };
+
 
 const makeFormInactive = () => {
   adForm.classList.add('ad-form--disabled');
