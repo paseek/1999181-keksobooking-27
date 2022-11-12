@@ -89,8 +89,13 @@ const roomsOption = {
   100 : ['0'],
 };
 
-const DEFAULTLAT = 35.6895.toFixed(5);
-const DEFAULTLNG = 139.692.toFixed(5);
+const DEF_COORDINATES = {
+  lat: 35.6895.toFixed(5),
+  lng: 139.692.toFixed(5)
+};
+
+// const DEFAULTLAT = 35.6895.toFixed(5);
+// const DEFAULTLNG = 139.692.toFixed(5);
 
 // const DEFAULT_COORDINATES = {
 //   lat: 35.68256,
@@ -119,8 +124,9 @@ export {
   priceOption,
   roomsOption,
   MAX_PRICE,
-  DEFAULTLAT,
-  DEFAULTLNG,
+  // DEFAULTLAT,
+  // DEFAULTLNG,
   DEFAULT_ZOOM,
   SHOW_ALERT_TIME,
+  DEF_COORDINATES,
 };

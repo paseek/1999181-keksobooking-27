@@ -1,10 +1,10 @@
 import { makeFormActive, makeMapActive, setCoordinates } from './form.js';
-import { DEFAULTLAT, DEFAULTLNG, DEFAULT_ZOOM, ARRAY_LENGTH } from './const.js';
+import { DEFAULT_ZOOM, ARRAY_LENGTH, DEF_COORDINATES } from './const.js';
 import { renderSimilarOffer } from './popup.js';
-
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
+// const addressField = document.querySelector('#address');
 
 const markerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -14,8 +14,8 @@ const markerIcon = L.icon({
 
 const mainMarker = L.marker(
   {
-    lat: DEFAULTLAT,
-    lng: DEFAULTLNG,
+    lat: DEF_COORDINATES.lat,
+    lng: DEF_COORDINATES.lng,
   },
   {
     draggable: true,
@@ -28,6 +28,7 @@ mainMarker.addTo(map);
 mainMarker.on('moveend', (evt) => {
   const latLng = evt.target.getLatLng();
   setCoordinates(latLng);
+  // addressField.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
 });
 
 // const resetMainMarker = () => {
@@ -69,8 +70,8 @@ const initMap = () => {
     makeFormActive();
   })
     .setView({
-      lat: DEFAULTLAT,
-      lng: DEFAULTLNG,
+      lat: DEF_COORDINATES.lat,
+      lng: DEF_COORDINATES.lng,
     }, DEFAULT_ZOOM);
 
   L.tileLayer(
@@ -83,12 +84,12 @@ const initMap = () => {
 
 const resetMap = () => {
   map.setView({
-    lat: DEFAULTLAT,
-    lng: DEFAULTLNG,
+    lat: DEF_COORDINATES.lat,
+    lng: DEF_COORDINATES.lng,
   }, DEFAULT_ZOOM);
   mainMarker.setLatLng({
-    lat: DEFAULTLAT,
-    lng: DEFAULTLNG,
+    lat: DEF_COORDINATES.lat,
+    lng: DEF_COORDINATES.lng,
   });
   map.closePopup();
 };

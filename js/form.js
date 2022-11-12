@@ -10,8 +10,9 @@ import {
   priceOption,
   roomsOption,
   MAX_PRICE,
-  DEFAULTLAT,
-  DEFAULTLNG,
+  // DEFAULTLAT,
+  // DEFAULTLNG,
+  DEF_COORDINATES,
 } from './const.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -82,6 +83,7 @@ noUiSlider.create(slider, {
 
 slider.noUiSlider.on('update', () => {
   price.value = slider.noUiSlider.get();
+  pristine.validate(price);
 });
 
 const resetSlider = () => {
@@ -90,13 +92,18 @@ const resetSlider = () => {
 
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
-  slider.noUiSlider.updateOptions({
-    start: price.placeholder,
-  });
+  // slider.noUiSlider.updateOptions({
+  //   start: price.placeholder,
+  // });
   pristine.validate(price);
 };
 
-const onPriceInputchange = () => slider.noUiSlider.set(price.value);
+const onPriceInputchange = () => {
+  if (!price.value) {
+    slider.noUiSlider.set(0);
+  }
+  slider.noUiSlider.set(price.value);
+};
 
 
 const validateCapacity = () => roomsOption[rooms.value].includes(capacity.value);
@@ -119,19 +126,18 @@ const onTimeInChange = () => {timeOut.value = timeIn.value;};
 const onTimeOutChange = () => {timeIn.value = timeOut.value;};
 
 address.setAttribute('readonly', 'readonly');
-address.value = `${DEFAULTLAT}, ${DEFAULTLNG}`;
+// address.value = `${DEFAULTLAT}, ${DEFAULTLNG}`;
+address.value = `${DEF_COORDINATES.lat}, ${DEF_COORDINATES.lng}`;
 const setCoordinates = (coordinates) => {
   address.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
 };
 
 const blockSubmitButton = () => {
-  // submitButton.disabled = true;
   submitButton.setAttribute('disabled', true);
   submitButton.textContent = 'Сохраняю...';
 };
 
 const unblockSubmitButton = () => {
-  // submitButton.disabled = false;
   submitButton.removeAttribute('disabled');
   submitButton.textContent = 'Сохранить';
 };
@@ -154,8 +160,8 @@ const onformSubmit = (evt) => {
     sendData(
       () => {
         showSuccessMessage();
-        resetAll();
         unblockSubmitButton();
+        resetAll();
       },
       () => {
         showErrorMessage();
@@ -178,9 +184,9 @@ const makeFormInactive = () => {
   price.removeEventListener('change', onPriceInputchange);
   capacity.removeEventListener('change', onCapacityChange);
   rooms.removeEventListener('change', onRoomsChange);
-  adForm.removeEventListener('submit', onformSubmit);
   timeIn.removeEventListener('change', onTimeInChange);
   timeOut.removeEventListener('change', onTimeOutChange);
+  adForm.removeEventListener('submit', onformSubmit);
 
 };
 
@@ -195,9 +201,9 @@ const makeFormActive = () => {
   price.addEventListener('change', onPriceInputchange);
   capacity.addEventListener('change', onCapacityChange);
   rooms.addEventListener('change', onRoomsChange);
-  adForm.addEventListener('submit', onformSubmit);
   timeIn.addEventListener('change', onTimeInChange);
   timeOut.addEventListener('change', onTimeOutChange);
+  adForm.addEventListener('submit', onformSubmit);
 };
 
 const makeMapInactive = () => {
