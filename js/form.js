@@ -72,12 +72,8 @@ noUiSlider.create(slider, {
   start: getNumberMinPrice(),
   connect: 'lower',
   format: {
-    to: function (value) {
-      return Number(value.toFixed(0));
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
+    to:  (value) => value.toFixed(0),
+    from: (value) => parseFloat(value),
   },
 });
 
@@ -92,9 +88,9 @@ const resetSlider = () => {
 
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
-  // slider.noUiSlider.updateOptions({
-  //   start: price.placeholder,
-  // });
+  slider.noUiSlider.updateOptions({
+    start: price.placeholder,
+  });
   pristine.validate(price);
 };
 
