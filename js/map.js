@@ -4,7 +4,7 @@ import { renderSimilarOffer } from './popup.js';
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
-// const addressField = document.querySelector('#address');
+// const address = document.querySelector('#address');
 
 const markerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -24,6 +24,7 @@ const mainMarker = L.marker(
 );
 
 mainMarker.addTo(map);
+
 
 mainMarker.on('moveend', (evt) => {
   const latLng = evt.target.getLatLng();

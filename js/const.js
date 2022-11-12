@@ -90,17 +90,13 @@ const roomsOption = {
 };
 
 const DEF_COORDINATES = {
-  lat: 35.6895.toFixed(5),
-  lng: 139.692.toFixed(5)
+  lat: 35.6895,
+  lng: 139.692
 };
 
 // const DEFAULTLAT = 35.6895.toFixed(5);
 // const DEFAULTLNG = 139.692.toFixed(5);
 
-// const DEFAULT_COORDINATES = {
-//   lat: 35.68256,
-//   lng: 139.75114
-// };
 
 const DEFAULT_ZOOM = 10;
 

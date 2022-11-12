@@ -1,6 +1,6 @@
 import { sendData } from './api.js';
 
-import { resetMap } from './map.js';
+// import { resetMap } from './map.js';
 
 import { showErrorMessage, showSuccessMessage } from './modal.js';
 
@@ -26,7 +26,7 @@ const rooms = adForm.querySelector('#room_number');
 const address = adForm.querySelector('#address');
 const slider = adForm.querySelector('.ad-form__slider');
 const submitButton = adForm.querySelector('.ad-form__submit');
-const resetButton = adForm.querySelector('.ad-form__reset');
+// const resetButton = adForm.querySelector('.ad-form__reset');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelectorAll('.map__filter');
 const mapFeatures = mapFilters.querySelector('.map__features');
@@ -66,10 +66,12 @@ pristine.addValidator(
 
 noUiSlider.create(slider, {
   range: {
-    min: getNumberMinPrice(),
+    min: 0,
     max: MAX_PRICE,
   },
+  // start: getNumberMinPrice(),
   start: getNumberMinPrice(),
+  step: 1,
   connect: 'lower',
   format: {
     to:  (value) => value.toFixed(0),
@@ -82,14 +84,14 @@ slider.noUiSlider.on('update', () => {
   pristine.validate(price);
 });
 
-const resetSlider = () => {
-  slider.noUiSlider.reset();
-};
-
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
   slider.noUiSlider.updateOptions({
-    start: price.placeholder,
+    // start: price.placeholder,
+    range: {
+      min: priceOption[type.value],
+      max: 100000
+    }
   });
   pristine.validate(price);
 };
@@ -100,6 +102,10 @@ const onPriceInputchange = () => {
   }
   slider.noUiSlider.set(price.value);
 };
+
+// const resetSlider = () => {
+//   slider.noUiSlider.reset();
+// };
 
 
 const validateCapacity = () => roomsOption[rooms.value].includes(capacity.value);
@@ -123,7 +129,7 @@ const onTimeOutChange = () => {timeIn.value = timeOut.value;};
 
 address.setAttribute('readonly', 'readonly');
 // address.value = `${DEFAULTLAT}, ${DEFAULTLNG}`;
-address.value = `${DEF_COORDINATES.lat}, ${DEF_COORDINATES.lng}`;
+address.value = `${DEF_COORDINATES.lat.toFixed(5)}, ${DEF_COORDINATES.lng.toFixed(5)}`;
 const setCoordinates = (coordinates) => {
   address.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
 };
@@ -138,13 +144,24 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const resetAll = () => {
-  adForm.reset();
-  resetMap();
-  resetSlider();
-};
+// const resetForm = () => {
+//   address.value = setCoordinates(DEF_COORDINATES);
+//   title.value = '';
+//   type.value = 'bungalow';
+//   slider.noUiSlider.set(0);
+//   price.value = '0';
+//   rooms.value = '1';
+//   capacity.value = '1';
+//   timeIn.value = '12:00';
+// };
 
-resetButton.addEventListener('click', resetAll);
+// const resetAll = () => {
+//   adForm.reset();
+//   resetMap();
+//   resetSlider();
+// };
+
+// resetButton.addEventListener('click', resetForm);
 
 const onformSubmit = (evt) => {
   evt.preventDefault();
@@ -157,7 +174,7 @@ const onformSubmit = (evt) => {
       () => {
         showSuccessMessage();
         unblockSubmitButton();
-        resetAll();
+        // resetAll();
       },
       () => {
         showErrorMessage();
