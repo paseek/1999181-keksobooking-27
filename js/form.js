@@ -1,6 +1,6 @@
 import { sendData } from './api.js';
 
-// import { resetMap } from './map.js';
+import { resetMap } from './map.js';
 
 import { showErrorMessage, showSuccessMessage } from './modal.js';
 
@@ -10,8 +10,6 @@ import {
   priceOption,
   roomsOption,
   MAX_PRICE,
-  // DEFAULTLAT,
-  // DEFAULTLNG,
   DEF_COORDINATES,
 } from './const.js';
 
@@ -26,7 +24,7 @@ const rooms = adForm.querySelector('#room_number');
 const address = adForm.querySelector('#address');
 const slider = adForm.querySelector('.ad-form__slider');
 const submitButton = adForm.querySelector('.ad-form__submit');
-// const resetButton = adForm.querySelector('.ad-form__reset');
+const resetButton = adForm.querySelector('.ad-form__reset');
 const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelectorAll('.map__filter');
 const mapFeatures = mapFilters.querySelector('.map__features');
@@ -69,7 +67,6 @@ noUiSlider.create(slider, {
     min: 0,
     max: MAX_PRICE,
   },
-  // start: getNumberMinPrice(),
   start: getNumberMinPrice(),
   step: 1,
   connect: 'lower',
@@ -89,7 +86,7 @@ const onTypeChange = () => {
   slider.noUiSlider.updateOptions({
     // start: price.placeholder,
     range: {
-      min: priceOption[type.value],
+      min: Number(priceOption[type.value]),
       max: 100000
     }
   });
@@ -103,10 +100,9 @@ const onPriceInputchange = () => {
   slider.noUiSlider.set(price.value);
 };
 
-// const resetSlider = () => {
-//   slider.noUiSlider.reset();
-// };
-
+const resetSlider = () => {
+  slider.noUiSlider.reset();
+};
 
 const validateCapacity = () => roomsOption[rooms.value].includes(capacity.value);
 
@@ -128,7 +124,6 @@ const onTimeInChange = () => {timeOut.value = timeIn.value;};
 const onTimeOutChange = () => {timeIn.value = timeOut.value;};
 
 address.setAttribute('readonly', 'readonly');
-// address.value = `${DEFAULTLAT}, ${DEFAULTLNG}`;
 address.value = `${DEF_COORDINATES.lat.toFixed(5)}, ${DEF_COORDINATES.lng.toFixed(5)}`;
 const setCoordinates = (coordinates) => {
   address.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
@@ -144,24 +139,16 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-// const resetForm = () => {
-//   address.value = setCoordinates(DEF_COORDINATES);
-//   title.value = '';
-//   type.value = 'bungalow';
-//   slider.noUiSlider.set(0);
-//   price.value = '0';
-//   rooms.value = '1';
-//   capacity.value = '1';
-//   timeIn.value = '12:00';
-// };
+const resetAll = (evt) => {
+  evt.preventDefault();
 
-// const resetAll = () => {
-//   adForm.reset();
-//   resetMap();
-//   resetSlider();
-// };
+  adForm.reset();
+  resetMap();
+  resetSlider();
+  pristine.reset();
+};
 
-// resetButton.addEventListener('click', resetForm);
+resetButton.addEventListener('click', resetAll);
 
 const onformSubmit = (evt) => {
   evt.preventDefault();
@@ -174,7 +161,7 @@ const onformSubmit = (evt) => {
       () => {
         showSuccessMessage();
         unblockSubmitButton();
-        // resetAll();
+        resetAll();
       },
       () => {
         showErrorMessage();
@@ -193,7 +180,6 @@ const makeFormInactive = () => {
     fieldset.disabled = true;
   });
   type.removeEventListener('change', onTypeChange);
-  // price.removeEventListener('change', onTypeChange);
   price.removeEventListener('change', onPriceInputchange);
   capacity.removeEventListener('change', onCapacityChange);
   rooms.removeEventListener('change', onRoomsChange);
@@ -210,7 +196,6 @@ const makeFormActive = () => {
     element.disabled = false;
   });
   type.addEventListener('change', onTypeChange);
-  // price.addEventListener('change', onTypeChange);
   price.addEventListener('change', onPriceInputchange);
   capacity.addEventListener('change', onCapacityChange);
   rooms.addEventListener('change', onRoomsChange);

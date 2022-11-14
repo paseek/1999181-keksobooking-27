@@ -5,47 +5,25 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 
-const errorMessage = errorTemplate.cloneNode(true);
-errorMessage.classList.add('hidden');
-document.body.append(errorMessage);
-
-const successMessage = successTemplate.cloneNode(true);
-successMessage.classList.add('hidden');
-document.body.append(successMessage);
-
-const onPopupEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    closeErrorModal();
-    closeSuccessModal();
+const renderModal = (template) => {
+  const modalTemplate = template.cloneNode(true);
+  document.body.append(modalTemplate);
+  const closeModal = () => {
+    modalTemplate.remove();
+    document.removeEventListener('keydown', onEscKeydown);
+  };
+  function onEscKeydown () {
+    if (isEscapeKey) {
+      closeModal();
+    }
   }
+  modalTemplate.addEventListener('click', closeModal);
+  document.addEventListener('keydown', onEscKeydown);
 };
 
-function closeErrorModal () {
-  errorMessage.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscKeydown);
-}
-function closeSuccessModal () {
-  successMessage.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscKeydown);
-}
+const showErrorMessage = () => renderModal(errorTemplate);
+const showSuccessMessage = () => renderModal(successTemplate);
 
-const addButtonHandler = (message) => {
-  const errorButton = message.querySelector('.error__button');
-  errorButton.addEventListener('click', closeErrorModal);
-};
-
-const showErrorMessage = () => {
-  errorMessage.classList.remove('hidden');
-  addButtonHandler(errorMessage);
-  document.addEventListener('keydown', onPopupEscKeydown);
-  errorMessage.addEventListener('click', closeErrorModal);
-};
-
-const showSuccessMessage = () => {
-  successMessage.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscKeydown);
-  successMessage.addEventListener('click', closeSuccessModal);
-};
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');

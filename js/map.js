@@ -29,15 +29,8 @@ mainMarker.addTo(map);
 mainMarker.on('moveend', (evt) => {
   const latLng = evt.target.getLatLng();
   setCoordinates(latLng);
-  // addressField.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
 });
 
-// const resetMainMarker = () => {
-//   mainMarker.setLatLng({
-//     lat: DEFAULTLAT,
-//     lng: DEFAULTLNG,
-//   });
-// };
 
 const markerOfferIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -84,14 +77,9 @@ const initMap = () => {
 };
 
 const resetMap = () => {
-  map.setView({
-    lat: DEF_COORDINATES.lat,
-    lng: DEF_COORDINATES.lng,
-  }, DEFAULT_ZOOM);
-  mainMarker.setLatLng({
-    lat: DEF_COORDINATES.lat,
-    lng: DEF_COORDINATES.lng,
-  });
+  map.setView(DEF_COORDINATES, DEFAULT_ZOOM);
+  mainMarker.setLatLng(DEF_COORDINATES);
+  setCoordinates(DEF_COORDINATES);
   map.closePopup();
 };
 
