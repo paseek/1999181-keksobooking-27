@@ -139,15 +139,13 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const resetAll = (evt) => {
-  if (evt) {
-    evt.preventDefault();
-  }
+const resetAll = () => {
 
   adForm.reset();
   resetMap();
   resetSlider();
   pristine.reset();
+  setCoordinates(DEF_COORDINATES);
 };
 
 resetButton.addEventListener('click', resetAll);
