@@ -76,21 +76,21 @@ noUiSlider.create(slider, {
   },
 });
 
-slider.noUiSlider.on('update', () => {
+slider.noUiSlider.on('slide', () => {
   price.value = slider.noUiSlider.get();
-  pristine.validate(price);
+  // pristine.validate(price);
 });
 
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
-  slider.noUiSlider.updateOptions({
-    // start: price.placeholder,
-    range: {
-      min: Number(priceOption[type.value]),
-      max: 100000
-    }
-  });
-  pristine.validate(price);
+  // slider.noUiSlider.updateOptions({
+  //   // start: price.placeholder,
+  //   range: {
+  //     min: Number(priceOption[type.value]),
+  //     max: 100000
+  //   }
+  // });
+  // pristine.validate(price);
 };
 
 const onPriceInputchange = () => {
@@ -140,7 +140,9 @@ const unblockSubmitButton = () => {
 };
 
 const resetAll = (evt) => {
-  evt.preventDefault();
+  if (evt) {
+    evt.preventDefault();
+  }
 
   adForm.reset();
   resetMap();
