@@ -93,6 +93,10 @@
             id="title"
             name="title"
             type="text"
+            minlength="30"
+            maxlength="100"
+            data-pristine-minlength-message="Минимальная длина 30 символов"
+            data-pristine-maxlength-message="Максимальная длина 100 символов"
             placeholder="Милая, уютная квартирка в центре Токио"
             data-pristine-required-message="Обязательное поле"
             required
@@ -121,7 +125,7 @@
           placeholder="5000"
           min="0"
           max="100000"
-          data-pristine-required-message="Обязательное поле"
+          data-pristine-required-message="Укажите стоимость за ночь"
           data-pristine-min-message=""
           data-pristine-max-message="Максимальнoe цена 100000 руб."
           required>

@@ -1,10 +1,10 @@
 import { makeFormActive, makeMapActive, setCoordinates } from './form.js';
-import { DEFAULTLAT, DEFAULTLNG, DEFAULT_ZOOM } from './const.js';
+import { DEFAULT_ZOOM, ARRAY_LENGTH, DEF_COORDINATES } from './const.js';
 import { renderSimilarOffer } from './popup.js';
-
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
+// const address = document.querySelector('#address');
 
 const markerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -14,8 +14,8 @@ const markerIcon = L.icon({
 
 const mainMarker = L.marker(
   {
-    lat: DEFAULTLAT,
-    lng: DEFAULTLNG,
+    lat: DEF_COORDINATES.lat,
+    lng: DEF_COORDINATES.lng,
   },
   {
     draggable: true,
@@ -25,17 +25,12 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
+
 mainMarker.on('moveend', (evt) => {
   const latLng = evt.target.getLatLng();
   setCoordinates(latLng);
 });
 
-const resetMainMarker = () => {
-  mainMarker.setLatLng({
-    lat: DEFAULTLAT,
-    lng: DEFAULTLNG,
-  });
-};
 
 const markerOfferIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -45,7 +40,7 @@ const markerOfferIcon = L.icon({
 
 const renderMarkers = (list) => {
 
-  list.forEach(({author, location, offer}) => {
+  list.slice(0, ARRAY_LENGTH).forEach(({author, location, offer}) => {
     const marker = L.marker(
       {
         lat: location.lat,
@@ -69,8 +64,8 @@ const initMap = () => {
     makeFormActive();
   })
     .setView({
-      lat: DEFAULTLAT,
-      lng: DEFAULTLNG,
+      lat: DEF_COORDINATES.lat,
+      lng: DEF_COORDINATES.lng,
     }, DEFAULT_ZOOM);
 
   L.tileLayer(
@@ -81,5 +76,12 @@ const initMap = () => {
   ).addTo(markerGroup);
 };
 
-export {renderMarkers, resetMainMarker, initMap};
+const resetMap = () => {
+  map.setView(DEF_COORDINATES, DEFAULT_ZOOM);
+  mainMarker.setLatLng(DEF_COORDINATES);
+  setCoordinates(DEF_COORDINATES);
+  map.closePopup();
+};
+
+export {renderMarkers, resetMap, initMap};
 
