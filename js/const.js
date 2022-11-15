@@ -73,11 +73,11 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
 const priceOption = {
-  'bungalow': '0',
-  'flat' : '1000',
-  'hotel' : '3000',
-  'house' : '5000',
-  'palace' : '10000',
+  'bungalow': 0,
+  'flat' : 1000,
+  'hotel' : 3000,
+  'house' : 5000,
+  'palace' : 10000,
 };
 
 const MAX_PRICE = 100000;

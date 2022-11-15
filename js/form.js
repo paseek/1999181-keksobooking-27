@@ -46,17 +46,10 @@ pristine.addValidator(
   getTitleErrorMessage,
 );
 
-// const getNumberMinPrice = () => Number(priceOption[type.value]);
-
-// const validatePrice = () => {
-//   price.min = getNumberMinPrice();
-
-//   return price.value >= Number(price.min);
-// };
-
+price.placeholder = priceOption[type.value];
 const validatePrice = () => price.value >= priceOption[type.value];
 
-const getPriceErrorMessage = () => `Мин.цена за "${type.options[type.selectedIndex].text}" - ${price.min} рублей!`;
+const getPriceErrorMessage = () => `Мин.цена за "${type.options[type.selectedIndex].text}" - ${priceOption[type.value]} рублей!`;
 
 pristine.addValidator(
   price,
@@ -85,13 +78,13 @@ slider.noUiSlider.on('slide', () => {
 
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
-  slider.noUiSlider.updateOptions({
-    start: price.placeholder,
-    range: {
-      min: 0,
-      max: 100000
-    }
-  });
+  // slider.noUiSlider.updateOptions({
+  //   // start: price.placeholder,
+  //   range: {
+  //     min: 0,
+  //     max: 100000
+  //   }
+  // });
   pristine.validate(price);
 };
 
@@ -100,6 +93,7 @@ const onPriceInputchange = () => {
     slider.noUiSlider.set(0);
   }
   slider.noUiSlider.set(price.value);
+  // pristine.validate(price);
 };
 
 const resetSlider = () => {
