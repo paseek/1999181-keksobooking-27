@@ -46,13 +46,15 @@ pristine.addValidator(
   getTitleErrorMessage,
 );
 
-const getNumberMinPrice = () => Number(priceOption[type.value]);
+// const getNumberMinPrice = () => Number(priceOption[type.value]);
 
-const validatePrice = () => {
-  price.min = getNumberMinPrice();
+// const validatePrice = () => {
+//   price.min = getNumberMinPrice();
 
-  return price.value >= Number(price.min);
-};
+//   return price.value >= Number(price.min);
+// };
+
+const validatePrice = () => price.value >= priceOption[type.value];
 
 const getPriceErrorMessage = () => `Мин.цена за "${type.options[type.selectedIndex].text}" - ${price.min} рублей!`;
 
@@ -67,7 +69,7 @@ noUiSlider.create(slider, {
     min: 0,
     max: MAX_PRICE,
   },
-  start: getNumberMinPrice(),
+  start: 0,
   step: 1,
   connect: 'lower',
   format: {
@@ -78,19 +80,19 @@ noUiSlider.create(slider, {
 
 slider.noUiSlider.on('slide', () => {
   price.value = slider.noUiSlider.get();
-  // pristine.validate(price);
+  pristine.validate(price);
 });
 
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
-  // slider.noUiSlider.updateOptions({
-  //   // start: price.placeholder,
-  //   range: {
-  //     min: Number(priceOption[type.value]),
-  //     max: 100000
-  //   }
-  // });
-  // pristine.validate(price);
+  slider.noUiSlider.updateOptions({
+    start: price.placeholder,
+    range: {
+      min: 0,
+      max: 100000
+    }
+  });
+  pristine.validate(price);
 };
 
 const onPriceInputchange = () => {
@@ -139,14 +141,23 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const resetAll = () => {
+// Объясни пожалуйста как работает часть с evt
+const resetAll = (evt) => {
+  if (evt) {
+    evt.preventDefault();
+  }
 
   adForm.reset();
   resetMap();
   resetSlider();
   pristine.reset();
-  setCoordinates(DEF_COORDINATES);
 };
+
+// const resetButtonClick = (evt) => {
+//   evt.preventDefault();
+//   resetAll();
+// };
+// resetButton.addEventListener('click', (evt) => resetButtonClick(evt));
 
 resetButton.addEventListener('click', resetAll);
 
