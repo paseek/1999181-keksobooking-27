@@ -4,7 +4,6 @@ import { renderSimilarOffer } from './popup.js';
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
-// const address = document.querySelector('#address');
 
 const markerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -38,9 +37,10 @@ const markerOfferIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const renderMarkers = (list) => {
+const renderMarkers = (offers) => {
+  markerGroup.clearLayers();
 
-  list.slice(0, ARRAY_LENGTH).forEach(({author, location, offer}) => {
+  offers.slice(0, ARRAY_LENGTH).forEach(({author, location, offer}) => {
     const marker = L.marker(
       {
         lat: location.lat,
@@ -55,8 +55,8 @@ const renderMarkers = (list) => {
       .addTo(markerGroup)
       .bindPopup(renderSimilarOffer(author, offer));
   });
-
 };
+
 
 const initMap = () => {
   map.on('load', () => {
@@ -73,7 +73,7 @@ const initMap = () => {
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-  ).addTo(markerGroup);
+  ).addTo(map);
 };
 
 const resetMap = () => {

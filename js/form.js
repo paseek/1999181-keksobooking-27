@@ -1,9 +1,7 @@
 import { sendData } from './api.js';
-
 import { resetMap } from './map.js';
-
+import { resetFilter } from './filters.js';
 import { showErrorMessage, showSuccessMessage } from './modal.js';
-
 import {
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
@@ -142,6 +140,8 @@ const resetAll = (evt) => {
   }
 
   adForm.reset();
+  price.placeholder = priceOption[type.value];
+  resetFilter();
   resetMap();
   resetSlider();
   pristine.reset();
