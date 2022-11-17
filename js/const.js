@@ -102,6 +102,9 @@ const DEFAULT_ZOOM = 10;
 
 const SHOW_ALERT_TIME = 5000;
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR = 'img/muffin-grey.svg';
+
 export {
   titles,
   Price,
@@ -125,4 +128,6 @@ export {
   DEFAULT_ZOOM,
   SHOW_ALERT_TIME,
   DEF_COORDINATES,
+  FILE_TYPES,
+  DEFAULT_AVATAR,
 };

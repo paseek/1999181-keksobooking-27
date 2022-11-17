@@ -9,6 +9,8 @@ import {
   roomsOption,
   MAX_PRICE,
   DEF_COORDINATES,
+  FILE_TYPES,
+  DEFAULT_AVATAR
 } from './const.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -27,6 +29,12 @@ const mapFilters = document.querySelector('.map__filters');
 const mapFilter = mapFilters.querySelectorAll('.map__filter');
 const mapFeatures = mapFilters.querySelector('.map__features');
 const mapElements = [...mapFilter, mapFeatures];
+const avatarUploader = document.querySelector('#avatar');
+const avatar = document.querySelector('.ad-form-header__preview img');
+const photoUplaoder = document.querySelector('#images');
+const photo = document.querySelector('.ad-form__photo');
+
+const typeApprove = (file) => FILE_TYPES.some((mime) => file.name.toLowerCase().endsWith(mime));
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -133,6 +141,32 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
+avatarUploader.addEventListener('change', () => {
+  const file = avatarUploader.files[0];
+
+  if (typeApprove(file)) {
+    avatar.src = URL.createObjectURL(file);
+  }
+});
+
+photoUplaoder.addEventListener('change', () => {
+  const file = photoUplaoder.files[0];
+
+  if (typeApprove(file)) {
+    photo.innerHTML = '';
+    const photoPreview = document.createElement('img');
+    photoPreview.src = URL.createObjectURL(file);
+    photoPreview.style.maxWidth = '100%';
+    photoPreview.style.maxHeight = 'auto';
+    photo.append(photoPreview);
+  }
+});
+
+const resetImages = () => {
+  photo.innerHTML = '';
+  avatar.src = DEFAULT_AVATAR;
+};
+
 // Объясни пожалуйста как работает часть с evt
 const resetAll = (evt) => {
   if (evt) {
@@ -144,6 +178,7 @@ const resetAll = (evt) => {
   resetFilter();
   resetMap();
   resetSlider();
+  resetImages();
   pristine.reset();
 };
 
