@@ -1,8 +1,25 @@
-import { makeFormActive, makeMapActive, setCoordinates } from './form.js';
+import { setCoordinates } from './form.js';
 import { DEFAULT_ZOOM, ARRAY_LENGTH, DEF_COORDINATES } from './const.js';
 import { renderSimilarOffer } from './popup.js';
+// import { getData } from './api.js';
+// import { debounce } from './utils.js';
+// import { setChangeEventOnFilter, getFilterOffers } from './filters.js';
 
 const map = L.map('map-canvas');
+// const map = L.map('map-canvas')
+//   .on('load', () => {
+// })
+//   .setView({
+//     lat: DEF_COORDINATES.lat,
+//     lng: DEF_COORDINATES.lng,
+//   }, DEFAULT_ZOOM);
+// L.tileLayer(
+//   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+//   {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>contributors',
+//   },
+// ).addTo(map);
+
 const markerGroup = L.layerGroup().addTo(map);
 
 const markerIcon = L.icon({
@@ -57,23 +74,25 @@ const renderMarkers = (offers) => {
   });
 };
 
+const clearMarkerGroup = () => {
+  markerGroup.clearLayers();
+};
 
-const initMap = () => {
+const initMap = (cb) => {
   map.on('load', () => {
-    makeMapActive();
-    makeFormActive();
+    // makeFormActive();
   })
     .setView({
       lat: DEF_COORDINATES.lat,
       lng: DEF_COORDINATES.lng,
     }, DEFAULT_ZOOM);
-
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</    a>contributors',
     },
   ).addTo(map);
+  cb();
 };
 
 const resetMap = () => {
@@ -83,5 +102,5 @@ const resetMap = () => {
   map.closePopup();
 };
 
-export {renderMarkers, resetMap, initMap};
+export {renderMarkers, resetMap, clearMarkerGroup, initMap} ;
 
