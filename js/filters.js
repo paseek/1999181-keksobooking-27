@@ -1,17 +1,16 @@
-const formFilters = document.querySelector('.map__filters');
-const filterType = formFilters.querySelector('#housing-type');
-const filterPrice = formFilters.querySelector('#housing-price');
-const filterRooms = formFilters.querySelector('#housing-rooms');
-const filterGuests = formFilters.querySelector('#housing-guests');
-const filterFeatures = document.querySelectorAll('.map__checkbox');
+import { RENDER_DELAY, PRICE_VALUE } from './const.js';
+import { resetStartMarkers, resetMarkers } from './form.js';
+import { renderMarkers } from './map.js';
+import { debounce } from './utils.js';
 
-const filters = [filterType, filterPrice, filterRooms, filterGuests, ...filterFeatures];
-
-// const DEFAULT_VALUE = 'any';
-const PRICE_VALUE = {
-  min: 10000,
-  max: 50000,
-};
+const mapFilters = document.querySelector('.map__filters');
+const mapFilter = mapFilters.querySelectorAll('.map__filter');
+const mapFeatures = mapFilters.querySelector('.map__features');
+const mapElements = [...mapFilter, mapFeatures];
+const filterType = mapFilters.querySelector('#housing-type');
+const filterPrice = mapFilters.querySelector('#housing-price');
+const filterRooms = mapFilters.querySelector('#housing-rooms');
+const filterGuests = mapFilters.querySelector('#housing-guests');
 
 const filterByType = (advert) => {
   if (filterType.value === 'any') {
@@ -48,7 +47,7 @@ const filterByGuests = (advert) => {
 };
 
 const filterByFeatures = (advert) => {
-  const checkedFeatures = formFilters.querySelectorAll('[type = "checkbox"]:checked');
+  const checkedFeatures = mapFilters.querySelectorAll('[type = "checkbox"]:checked');
   if (!checkedFeatures.length) {
     return true;
   }
@@ -63,79 +62,32 @@ const filterByFeatures = (advert) => {
 
 const filterAdverts = (advert) => filterByType(advert) && filterByPrice(advert) && filterByRooms(advert) && filterByGuests(advert) && filterByFeatures(advert);
 
-// const SIMILAR_AD_COUNT = 10;
+const deactivateFilters = () => {
+  mapFilters.classList.add('map__filters--disabled');
 
-// const getFilterType = (offers) => filterType.value === offers.offer.type || filterType.value === DEFAULT_VALUE;
-// const getFilterPrice = (offers) => {
-//   switch (filterPrice.value) {
-//     case 'any':
-//       return true;
-//     case 'low':
-//       return offers.offer.price <= PRICE_VALUE.min || offers.offer.price === DEFAULT_VALUE;
-//     case 'middle':
-//       return offers.offer.price > PRICE_VALUE.min && offers.offer.price <= PRICE_VALUE.max || offers.offer.price === DEFAULT_VALUE;
-//     case 'high':
-//       return offers.offer.price > PRICE_VALUE.max || offers.offer.price === DEFAULT_VALUE;
-//   }
-// };
-// const getFilterRooms = (offers) => +filterRooms.value === offers.offer.rooms || filterRooms.value === DEFAULT_VALUE;
-// const getFilterGuests = (offers) => +filterGuests.value === offers.offer.guests || filterGuests.value === DEFAULT_VALUE;
-
-// const getFilterFeatures = (offers) => {
-//   const featuresChecked = [];
-//   filterFeatures.forEach((feature) => {
-//     if (feature.checked) {
-//       featuresChecked.push(feature.value);
-//     }
-//   });
-
-//   if (featuresChecked.length > 0 && offers.offer.features === undefined) {
-//     return false;
-//   }
-//   return featuresChecked.every((feature) => offers.offer.features.includes(feature));
-// };
-
-
-// const getFilterOffers = (offers) => {
-
-//   const filteredData = [];
-//   for (let i = 0; i < offers.length; i++) {
-//     const offer = offers[i];
-//     if (
-//       getFilterType(offer) &&
-//       getFilterPrice(offer) &&
-//       getFilterRooms(offer) &&
-//       getFilterGuests(offer) &&
-//       getFilterFeatures(offer)
-//     ) {
-//       filteredData.push(offer);
-//     }
-//     if (filteredData.length === SIMILAR_AD_COUNT) {
-//       break;
-//     }
-//   }
-//   return filteredData;
-// };
-
-const setChangeEventOnFilter = (callback) => {
-  filters.forEach((filter) => filter.addEventListener('change', () => {
-    callback();
-  }));
+  mapElements.forEach((element) => {
+    element.disabled = true;
+  });
 };
 
-// const resetFilter = () => {
-//   filterType.value = DEFAULT_VALUE;
-//   filterPrice.value = DEFAULT_VALUE;
-//   filterRooms.value = DEFAULT_VALUE;
-//   filterGuests.value = DEFAULT_VALUE;
+const activateFilters = (offers) => {
+  mapFilters.classList.remove('map__filters--disabled');
 
-//   filterFeatures.forEach((elem) => {
-//     elem.checked = false;
-//   });
-// };
+  mapElements.forEach((element) => {
+    element.disabled = false;
+  });
+
+  resetStartMarkers(offers);
+  resetMarkers(offers);
+
+  const onFiltersChange = (debounce(() => renderMarkers(offers.filter(filterAdverts)), RENDER_DELAY,));
+
+  mapFilters.addEventListener('change', onFiltersChange);
+};
 
 const resetFilter = () => {
-  formFilters.reset();
+  mapFilters.reset();
 };
 
-export { setChangeEventOnFilter, resetFilter, filterAdverts };
+
+export { resetFilter, deactivateFilters, activateFilters };

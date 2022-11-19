@@ -1,9 +1,5 @@
 import { price } from './form.js';
-
-const MIN_RANGE = 0;
-const MAX_RANGE = 100000;
-
-const START_RANGE = 1000;
+import { MIN_RANGE, MAX_RANGE, START_RANGE } from './const.js';
 
 const sliderElement = document.querySelector('.ad-form__slider');
 

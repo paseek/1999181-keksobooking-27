@@ -1,17 +1,9 @@
-import { makeFormInactive, makeMapInactive, makeMapActive, makeFormActive } from './form.js';
-import { renderMarkers, initMap } from './map.js';
-import { getData } from './api.js';
-import { debounce } from './utils.js';
-import { setChangeEventOnFilter, filterAdverts } from './filters.js';
+import { deactivateForm } from './form.js';
+import { initMap } from './map.js';
+import { deactivateFilters } from './filters.js';
 
-const RENDER_DELAY = 1000;
+deactivateForm();
+deactivateFilters();
 
-makeFormInactive();
-makeMapInactive();
+initMap();
 
-initMap(makeFormActive);
-getData((offers) => {
-  renderMarkers(offers);
-  makeMapActive();
-  setChangeEventOnFilter(debounce(() => renderMarkers(offers.filter(filterAdverts)), RENDER_DELAY,));
-});
