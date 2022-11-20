@@ -11,6 +11,7 @@ const getData = (onSuccess) => {
     });
 };
 
+
 const sendData = (onSuccess, onFail, body) => {
 
   fetch(

@@ -1,16 +1,16 @@
 import { sendData } from './api.js';
-
-import { resetMap } from './map.js';
-
+import { resetMap, renderMarkers } from './map.js';
+import { resetFilter } from './filters.js';
 import { showErrorMessage, showSuccessMessage } from './modal.js';
-
 import {
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
   priceOption,
   roomsOption,
   MAX_PRICE,
-  DEF_COORDINATES,
+  DEFAULT_COORDINATES,
+  FILE_TYPES,
+  DEFAULT_AVATAR
 } from './const.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -25,10 +25,12 @@ const address = adForm.querySelector('#address');
 const slider = adForm.querySelector('.ad-form__slider');
 const submitButton = adForm.querySelector('.ad-form__submit');
 const resetButton = adForm.querySelector('.ad-form__reset');
-const mapFilters = document.querySelector('.map__filters');
-const mapFilter = mapFilters.querySelectorAll('.map__filter');
-const mapFeatures = mapFilters.querySelector('.map__features');
-const mapElements = [...mapFilter, mapFeatures];
+const avatarUploader = document.querySelector('#avatar');
+const avatar = document.querySelector('.ad-form-header__preview img');
+const photoUplaoder = document.querySelector('#images');
+const photo = document.querySelector('.ad-form__photo');
+
+const typeApprove = (file) => FILE_TYPES.some((mime) => file.name.toLowerCase().endsWith(mime));
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -46,17 +48,10 @@ pristine.addValidator(
   getTitleErrorMessage,
 );
 
-// const getNumberMinPrice = () => Number(priceOption[type.value]);
-
-// const validatePrice = () => {
-//   price.min = getNumberMinPrice();
-
-//   return price.value >= Number(price.min);
-// };
-
+price.placeholder = priceOption[type.value];
 const validatePrice = () => price.value >= priceOption[type.value];
 
-const getPriceErrorMessage = () => `Мин.цена за "${type.options[type.selectedIndex].text}" - ${price.min} рублей!`;
+const getPriceErrorMessage = () => `Мин.цена за "${type.options[type.selectedIndex].text}" - ${priceOption[type.value]} рублей!`;
 
 pristine.addValidator(
   price,
@@ -85,13 +80,6 @@ slider.noUiSlider.on('slide', () => {
 
 const onTypeChange = () => {
   price.placeholder = priceOption[type.value];
-  slider.noUiSlider.updateOptions({
-    start: price.placeholder,
-    range: {
-      min: 0,
-      max: 100000
-    }
-  });
   pristine.validate(price);
 };
 
@@ -126,7 +114,7 @@ const onTimeInChange = () => {timeOut.value = timeIn.value;};
 const onTimeOutChange = () => {timeIn.value = timeOut.value;};
 
 address.setAttribute('readonly', 'readonly');
-address.value = `${DEF_COORDINATES.lat.toFixed(5)}, ${DEF_COORDINATES.lng.toFixed(5)}`;
+address.value = `${DEFAULT_COORDINATES.lat.toFixed(5)}, ${DEFAULT_COORDINATES.lng.toFixed(5)}`;
 const setCoordinates = (coordinates) => {
   address.value = `${(coordinates.lat).toFixed(5)}, ${(coordinates.lng).toFixed(5)}`;
 };
@@ -141,25 +129,61 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-// Объясни пожалуйста как работает часть с evt
+avatarUploader.addEventListener('change', () => {
+  const file = avatarUploader.files[0];
+
+  if (typeApprove(file)) {
+    avatar.src = URL.createObjectURL(file);
+  }
+});
+
+photoUplaoder.addEventListener('change', () => {
+  const file = photoUplaoder.files[0];
+
+  if (typeApprove(file)) {
+    photo.innerHTML = '';
+    const photoPreview = document.createElement('img');
+    photoPreview.src = URL.createObjectURL(file);
+    photoPreview.style.maxWidth = '100%';
+    photoPreview.style.maxHeight = 'auto';
+    photo.append(photoPreview);
+  }
+});
+
+const resetImages = () => {
+  photo.innerHTML = '';
+  avatar.src = DEFAULT_AVATAR;
+};
+
 const resetAll = (evt) => {
   if (evt) {
     evt.preventDefault();
   }
 
   adForm.reset();
+  price.placeholder = priceOption[type.value];
+  resetFilter();
   resetMap();
   resetSlider();
+  resetImages();
   pristine.reset();
 };
 
-// const resetButtonClick = (evt) => {
-//   evt.preventDefault();
-//   resetAll();
-// };
-// resetButton.addEventListener('click', (evt) => resetButtonClick(evt));
-
 resetButton.addEventListener('click', resetAll);
+
+
+const resetStartMarkers = (offers) => {
+  resetButton.addEventListener('click', () => {
+    renderMarkers(offers);
+  });
+};
+
+const resetMarkers = (offers) => {
+  adForm.addEventListener('submit', () => {
+    renderMarkers(offers);
+  });
+};
+
 
 const onformSubmit = (evt) => {
   evt.preventDefault();
@@ -168,9 +192,10 @@ const onformSubmit = (evt) => {
 
   if (isValid) {
     blockSubmitButton();
+    resetStartMarkers();
     sendData(
       () => {
-        showSuccessMessage();
+        showSuccessMessage(() => {});
         unblockSubmitButton();
         resetAll();
       },
@@ -183,10 +208,8 @@ const onformSubmit = (evt) => {
   }
 };
 
-
-const makeFormInactive = () => {
+const deactivateForm = () => {
   adForm.classList.add('ad-form--disabled');
-
   adFormFieldsets.forEach((fieldset) => {
     fieldset.disabled = true;
   });
@@ -200,9 +223,8 @@ const makeFormInactive = () => {
 
 };
 
-const makeFormActive = () => {
+const activateForm = () => {
   adForm.classList.remove('ad-form--disabled');
-
   adFormFieldsets.forEach((element) => {
     element.disabled = false;
   });
@@ -215,21 +237,4 @@ const makeFormActive = () => {
   adForm.addEventListener('submit', onformSubmit);
 };
 
-const makeMapInactive = () => {
-  mapFilters.classList.add('map__filters--disabled');
-
-  mapElements.forEach((element) => {
-    element.disabled = true;
-  });
-};
-
-const makeMapActive = () => {
-  mapFilters.classList.remove('map__filters--disabled');
-
-  mapElements.forEach((element) => {
-    element.disabled = false;
-  });
-};
-
-
-export { makeFormInactive, makeFormActive, makeMapInactive, makeMapActive, setCoordinates };
+export { deactivateForm, activateForm, setCoordinates, resetStartMarkers, resetMarkers };

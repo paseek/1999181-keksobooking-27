@@ -1,11 +1,9 @@
-import { makeFormInactive, makeMapInactive } from './form.js';
-import { initMap, renderMarkers } from './map.js';
-import { getData } from './api.js';
+import { deactivateForm } from './form.js';
+import { initMap } from './map.js';
+import { deactivateFilters } from './filters.js';
 
-makeFormInactive();
-makeMapInactive();
+deactivateForm();
+deactivateFilters();
 
 initMap();
-getData((offers) => {
-  renderMarkers(offers);
-});
+

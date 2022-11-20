@@ -1,3 +1,5 @@
+import { typesRus } from './const.js';
+
 const offerTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
@@ -21,7 +23,7 @@ const renderSimilarOffer = (author, offer) => {
   const photoElement = photoContainer.querySelector('.popup__photo');
   const capacityContainer = offerElement.querySelector('.popup__text--capacity');
 
-  const checkDataAvailable = (selector, selectorData) => {
+  const checkOfferData = (selector, selectorData) => {
     if (selectorData) {
       selector.textContent = selectorData;
     } else {
@@ -29,10 +31,10 @@ const renderSimilarOffer = (author, offer) => {
     }
   };
 
-  checkDataAvailable(descriptionContainer, description);
-  checkDataAvailable(titleContainer, title);
-  checkDataAvailable(addressContainer, address);
-  checkDataAvailable(typeContainer, type);
+  checkOfferData(descriptionContainer, description);
+  checkOfferData(titleContainer, title);
+  checkOfferData(addressContainer, address);
+  checkOfferData(typeContainer, typesRus[type]);
 
   if (avatar) {
     avatarContainer.src = avatar;

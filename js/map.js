@@ -1,10 +1,12 @@
-import { makeFormActive, makeMapActive, setCoordinates } from './form.js';
-import { DEFAULT_ZOOM, ARRAY_LENGTH, DEF_COORDINATES } from './const.js';
+import { setCoordinates, activateForm } from './form.js';
+import { DEFAULT_ZOOM, ARRAY_LENGTH, DEFAULT_COORDINATES, } from './const.js';
 import { renderSimilarOffer } from './popup.js';
+import { getData } from './api.js';
+import { activateFilters } from './filters.js';
 
 const map = L.map('map-canvas');
+
 const markerGroup = L.layerGroup().addTo(map);
-// const address = document.querySelector('#address');
 
 const markerIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -14,8 +16,8 @@ const markerIcon = L.icon({
 
 const mainMarker = L.marker(
   {
-    lat: DEF_COORDINATES.lat,
-    lng: DEF_COORDINATES.lng,
+    lat: DEFAULT_COORDINATES.lat,
+    lng: DEFAULT_COORDINATES.lng,
   },
   {
     draggable: true,
@@ -25,12 +27,10 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-
 mainMarker.on('moveend', (evt) => {
   const latLng = evt.target.getLatLng();
   setCoordinates(latLng);
 });
-
 
 const markerOfferIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -38,9 +38,10 @@ const markerOfferIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const renderMarkers = (list) => {
+const renderMarkers = (offers) => {
+  markerGroup.clearLayers();
 
-  list.slice(0, ARRAY_LENGTH).forEach(({author, location, offer}) => {
+  offers.slice(0, ARRAY_LENGTH).forEach(({author, location, offer}) => {
     const marker = L.marker(
       {
         lat: location.lat,
@@ -55,33 +56,35 @@ const renderMarkers = (list) => {
       .addTo(markerGroup)
       .bindPopup(renderSimilarOffer(author, offer));
   });
-
 };
 
 const initMap = () => {
-  map.on('load', () => {
-    makeMapActive();
-    makeFormActive();
-  })
+  map
+    .on('load', () => {
+      activateForm();
+      getData((offers) => {
+        renderMarkers(offers);
+        activateFilters(offers);
+      });
+    })
     .setView({
-      lat: DEF_COORDINATES.lat,
-      lng: DEF_COORDINATES.lng,
+      lat: DEFAULT_COORDINATES.lat,
+      lng: DEFAULT_COORDINATES.lng,
     }, DEFAULT_ZOOM);
-
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</    a>contributors',
     },
-  ).addTo(markerGroup);
+  ).addTo(map);
 };
 
 const resetMap = () => {
-  map.setView(DEF_COORDINATES, DEFAULT_ZOOM);
-  mainMarker.setLatLng(DEF_COORDINATES);
-  setCoordinates(DEF_COORDINATES);
+  map.setView(DEFAULT_COORDINATES, DEFAULT_ZOOM);
+  mainMarker.setLatLng(DEFAULT_COORDINATES);
+  setCoordinates(DEFAULT_COORDINATES);
   map.closePopup();
 };
 
-export {renderMarkers, resetMap, initMap};
+export {renderMarkers, resetMap, initMap} ;
 
