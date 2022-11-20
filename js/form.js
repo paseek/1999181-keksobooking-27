@@ -192,7 +192,6 @@ const onformSubmit = (evt) => {
 
   if (isValid) {
     blockSubmitButton();
-    resetStartMarkers();
     sendData(
       () => {
         showSuccessMessage();
