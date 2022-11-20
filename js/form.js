@@ -195,7 +195,7 @@ const onformSubmit = (evt) => {
     resetStartMarkers();
     sendData(
       () => {
-        showSuccessMessage(() => {});
+        showSuccessMessage();
         unblockSubmitButton();
         resetAll();
       },
